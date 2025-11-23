@@ -88,7 +88,8 @@ const CurvedLoop: FC<CurvedLoopProps> = ({
   const uid = useId();
   const pathId = `curve-${uid}`;
   const pathD = `M-100,40 Q500,${40 + curveAmount} 1540,40`;
-
+  const [isHovered, setIsHovered] = useState(false);
+  const speedRef = useRef(speed);
   const dragRef = useRef(false);
   const lastXRef = useRef(0);
   const dirRef = useRef<'left' | 'right'>(direction);
@@ -113,14 +114,14 @@ const CurvedLoop: FC<CurvedLoopProps> = ({
       textPathRef.current.setAttribute('startOffset', initial + 'px');
       setOffset(initial);
     }
-  }, [spacing]);
+  }, [spacing, speedRef, ready]);
 
   useEffect(() => {
     if (!spacing || !ready) return;
     let frame = 0;
     const step = () => {
       if (!dragRef.current && textPathRef.current) {
-        const delta = dirRef.current === 'right' ? speed : -speed;
+        const delta = dirRef.current === 'right' ? speedRef.current : -speedRef.current;
         const currentOffset = parseFloat(textPathRef.current.getAttribute('startOffset') || '0');
         let newOffset = currentOffset + delta;
         const wrapPoint = spacing;
@@ -134,6 +135,9 @@ const CurvedLoop: FC<CurvedLoopProps> = ({
     frame = requestAnimationFrame(step);
     return () => cancelAnimationFrame(frame);
   }, [spacing, speed, ready]);
+  useEffect(() => {
+    speedRef.current = isHovered ? speed * 0.3 : speed;
+  }, [isHovered, speed]);
 
   const onPointerDown = (e: PointerEvent) => {
     if (!interactive) return;
@@ -173,6 +177,8 @@ const CurvedLoop: FC<CurvedLoopProps> = ({
       onPointerMove={onPointerMove}
       onPointerUp={endDrag}
       onPointerLeave={endDrag}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       <svg className="curved-loop-svg" viewBox="0 0 1440 120">
         <text ref={measureRef} xmlSpace="preserve" style={{ visibility: 'hidden', opacity: 0, pointerEvents: 'none' }}>

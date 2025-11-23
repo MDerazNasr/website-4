@@ -7,7 +7,7 @@ export default function Home() {
       {/* Background layer - Squares component */}
       <div className="absolute inset-0 z-0">
         <Squares 
-          speed={0.5} 
+          speed={1} 
           squareSize={40}
           direction='diagonal'
           borderColor='#fff'
