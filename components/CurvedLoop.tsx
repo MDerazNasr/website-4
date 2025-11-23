@@ -57,27 +57,65 @@ const CurvedLoop: FC<CurvedLoopProps> = ({
         return (hasTrailing ? fullText.replace(/\s+$/, '') : fullText) + '\u00A0';
     }, [navItems]);
 
-    const handleTextClick = (e: React.MouseEvent<SVGTextElement>) => {        // Dont handle clicks if dragging
+    const handleTextClick = (e: React.MouseEvent<SVGTextElement>) => {
+        // Don't handle clicks if dragging
         if (dragRef.current) return;
 
-        //Get the SVG element and its position
-        const svg = e.currentTarget.closest('svg');
-        if (!svg) return;
+        // Get the SVG text element and its position
+        const textElement = e.currentTarget;
+        const svg = textElement.closest('svg');
+        if (!svg || !textPathRef.current || !spacing) return;
 
         const rect = svg.getBoundingClientRect();
         const clickX = e.clientX - rect.left;
 
-        //Calculate which item was clicked based on position
-        //This is approximate, needs improvement 
-        const itemWidth = spacing / navItems.length;
-        const clickedIndex = Math.floor(clickX / itemWidth) % navItems.length;
-        const clickedItem = navItems[clickedIndex];
+        // Calculate which item was clicked based on the actual text structure
+        // The text repeats, so we need to find the position within one cycle
+        const seperator = ' ꩜ ';
+        const singleCycleText = navItems.map(item => item.label).join(seperator) + seperator;
+        
+        // Calculate the position along the curved path
+        // The viewBox is 1440 wide, and we need to account for the offset
+        const viewBoxWidth = 1440;
+        const normalizedX = (clickX / rect.width) * viewBoxWidth;
+        
+        // Account for the current scroll offset (wrapped to one cycle)
+        const normalizedOffset = ((offset % spacing) + spacing) % spacing;
+        const positionInCycle = ((normalizedX - normalizedOffset + spacing) % spacing);
+        
+        // Calculate which character in the single cycle this corresponds to
+        // This is approximate since we're dealing with curved text
+        const charPosition = Math.floor((positionInCycle / spacing) * singleCycleText.length);
+        const actualCharIndex = charPosition % singleCycleText.length;
+        
+        // Find which item this character belongs to
+        let currentPos = 0;
+        let clickedItem: NavItem | null = null;
+        
+        for (let i = 0; i < navItems.length; i++) {
+            const item = navItems[i];
+            const itemText = item.label;
+            const itemStart = currentPos;
+            const itemEnd = currentPos + itemText.length;
+            
+            // Check if the click is within this item's text range
+            if (actualCharIndex >= itemStart && actualCharIndex < itemEnd) {
+                clickedItem = item;
+                break;
+            }
+            
+            // Move to next item (item text + separator)
+            currentPos += itemText.length + seperator.length;
+        }
 
-        //Handle the click
-        if (clickedItem.href) {
-            window.location.href = clickedItem.href;
-        } else if (clickedItem.onClick) {
-            clickedItem.onClick();
+        // Handle the click (only once per click event)
+        if (clickedItem) {
+            e.stopPropagation(); // Prevent multiple triggers
+            if (clickedItem.href) {
+                window.location.href = clickedItem.href;
+            } else if (clickedItem.onClick) {
+                clickedItem.onClick();
+            }
         }
     };
   const measureRef = useRef<SVGTextElement | null>(null);
