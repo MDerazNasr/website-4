@@ -31,62 +31,31 @@ const Squares: React.FC<SquaresProps> = ({
   const numSquaresY = useRef<number>(0);
   const gridOffset = useRef<GridOffset>({ x: 0, y: 0 });
   const hoveredSquareRef = useRef<GridOffset | null>(null);
-  const logicalWidth = useRef<number>(0);
-  const logicalHeight = useRef<number>(0);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
     const resizeCanvas = () => {
-      const dpr = window.devicePixelRatio || 1;
-      const rect = canvas.getBoundingClientRect();
-      
-      // Store logical dimensions
-      logicalWidth.current = rect.width;
-      logicalHeight.current = rect.height;
-      
-      // Set actual size in memory (scaled for DPI)
-      canvas.width = rect.width * dpr;
-      canvas.height = rect.height * dpr;
-      
-      // Scale the canvas back down using CSS
-      canvas.style.width = rect.width + 'px';
-      canvas.style.height = rect.height + 'px';
-      
-      // Reset transform and scale the drawing context for high DPI
-      if (ctx) {
-        ctx.setTransform(1, 0, 0, 1, 0, 0); // Reset transform
-        ctx.scale(dpr, dpr);
-      }
-      
-      numSquaresX.current = Math.ceil(rect.width / squareSize) + 1;
-      numSquaresY.current = Math.ceil(rect.height / squareSize) + 1;
+      canvas.width = canvas.offsetWidth || window.innerWidth;
+      canvas.height = canvas.offsetHeight || window.innerHeight;
+      numSquaresX.current = Math.ceil(canvas.width / squareSize) + 1;
+      numSquaresY.current = Math.ceil(canvas.height / squareSize) + 1;
     };
 
     window.addEventListener('resize', resizeCanvas);
-    
-    // Use requestAnimationFrame to ensure DOM is ready
-    requestAnimationFrame(() => {
-      resizeCanvas();
-    });
+    resizeCanvas();
 
     const drawGrid = () => {
-      if (!ctx) return;
-      const width = logicalWidth.current;
-      const height = logicalHeight.current;
-      
-      // Don't draw if dimensions are invalid
-      if (width === 0 || height === 0) return;
-      
-      ctx.clearRect(0, 0, width, height);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       const startX = Math.floor(gridOffset.current.x / squareSize) * squareSize;
       const startY = Math.floor(gridOffset.current.y / squareSize) * squareSize;
 
-      for (let x = startX; x < width + squareSize; x += squareSize) {
-        for (let y = startY; y < height + squareSize; y += squareSize) {
+      for (let x = startX; x < canvas.width + squareSize; x += squareSize) {
+        for (let y = startY; y < canvas.height + squareSize; y += squareSize) {
           const squareX = x - (gridOffset.current.x % squareSize);
           const squareY = y - (gridOffset.current.y % squareSize);
 
@@ -105,18 +74,18 @@ const Squares: React.FC<SquaresProps> = ({
       }
 
       const gradient = ctx.createRadialGradient(
-        width / 2,
-        height / 2,
+        canvas.width / 2,
+        canvas.height / 2,
         0,
-        width / 2,
-        height / 2,
-        Math.sqrt(width ** 2 + height ** 2) / 2
+        canvas.width / 2,
+        canvas.height / 2,
+        Math.sqrt(canvas.width ** 2 + canvas.height ** 2) / 2
       );
       gradient.addColorStop(0, 'rgba(0, 0, 0, 0)');
       gradient.addColorStop(1, '#060010');
 
       ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, width, height);
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
     };
 
     const updateAnimation = () => {
@@ -186,3 +155,4 @@ const Squares: React.FC<SquaresProps> = ({
 };
 
 export default Squares;
+
