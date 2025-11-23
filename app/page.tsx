@@ -1,4 +1,5 @@
 import Squares from '@/components/Squares';
+import CurvedLoop from '@/components/CurvedLoop';
 
 export default function Home() {
   return (
@@ -17,6 +18,16 @@ export default function Home() {
       {/* Content layer - your content goes here */}
       <div className="relative z-10">
         {/* Add your content here */}
+          <CurvedLoop 
+            marqueeText="About Me ✘ Resume ✦ Education ꩜ Experience ✶ Projects ༄ Contact ✧"
+            // ✦ ꩜ ✶ ➤ ✘ ༄ ✧
+            speed={3}
+            curveAmount={500}
+            direction="right"
+            interactive={true}
+            className="custom-text-style"
+          />
+        {/* <CurvedLoop marqueeText="Welcome to React Bits ✦" /> */}
       </div>
     </main>
   );
