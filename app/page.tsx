@@ -19,9 +19,9 @@ export default function Home() {
       <div className="relative z-10">
         {/* Add your content here */}
           <CurvedLoop 
-            marqueeText="About Me ✘ Resume ✦ Education ꩜ Experience ✶ Projects ༄ Contact ✧"
+            marqueeText="About Me ꩜ Resume ꩜ Education ꩜ Experience ꩜ Projects ꩜ Contact ꩜"
             // ✦ ꩜ ✶ ➤ ✘ ༄ ✧
-            speed={3}
+            speed={6.5}
             curveAmount={500}
             direction="right"
             interactive={true}

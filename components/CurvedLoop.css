@@ -4,9 +4,11 @@
     align-items: center;
     justify-content: center;
     width: 100%;
+    pointer-events: none;
   }
   
   .curved-loop-svg {
+    pointer-events: auto;
     user-select: none;
     width: 100%;
     aspect-ratio: 100 / 12;

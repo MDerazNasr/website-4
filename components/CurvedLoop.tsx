@@ -2,28 +2,84 @@
 import { useRef, useEffect, useState, useMemo, useId, FC, PointerEvent } from 'react';
 import './CurvedLoop.css';
 
+interface NavItem {
+    label: string;
+    href?: string;
+    target?: string;
+    // rel?: string;
+    // className?: string;
+    onClick?: () => void;
+    // onMouseEnter?: () => void;
+    // onMouseLeave?: () => void;
+    // onMouseMove?: (e: MouseEvent) => void;
+    // onMouseDown?: (e: MouseEvent) => void;
+}
+
 interface CurvedLoopProps {
-  marqueeText?: string;
-  speed?: number;
-  className?: string;
-  curveAmount?: number;
-  direction?: 'left' | 'right';
-  interactive?: boolean;
+    items?: NavItem[];
+    marqueeText?: string;
+    speed?: number;
+    className?: string;
+    curveAmount?: number;
+    direction?: 'left' | 'right';
+    interactive?: boolean;
 }
 
 const CurvedLoop: FC<CurvedLoopProps> = ({
-  marqueeText = '',
-  speed = 2,
-  className,
-  curveAmount = 400,
-  direction = 'left',
-  interactive = true
+    items,
+    marqueeText = '',
+    speed = 2,
+    className,
+    curveAmount = 400,
+    direction = 'left',
+    interactive = true
 }) => {
-  const text = useMemo(() => {
-    const hasTrailing = /\s|\u00A0$/.test(marqueeText);
-    return (hasTrailing ? marqueeText.replace(/\s+$/, '') : marqueeText) + '\u00A0';
-  }, [marqueeText]);
 
+  /* converts the text string into an array of item */
+    const parseItems = (text: string): NavItem[] => {
+        // split by common separators: ✘ ✦ ꩜ ✶ ➤ ༄ ✧
+        const seperators = /[✦✘꩜✶༄✧]/g;;
+        const parts = text.split(seperators).map(part => part.trim()).filter(part => part.length > 0);
+        return parts.map(label => ({ label }));
+        }
+    // Parse items from marqueeText or use items prop
+    const navItems = useMemo(() => {
+        if (items) return items; // If items prop is provided, use it
+        return parseItems(marqueeText); // Otherwise, parse the marqueeText
+    }, [items, marqueeText]);
+
+    const text = useMemo(() => {
+        const seperator = ' ꩜ ';
+        const fullText = navItems
+            .map((item: NavItem) => item.label)
+            .join(seperator) + seperator;
+        const hasTrailing = /\s|\u00A0$/.test(fullText);
+        return (hasTrailing ? fullText.replace(/\s+$/, '') : fullText) + '\u00A0';
+    }, [navItems]);
+
+    const handleTextClick = (e: React.MouseEvent<SVGTextElement>) => {        // Dont handle clicks if dragging
+        if (dragRef.current) return;
+
+        //Get the SVG element and its position
+        const svg = e.currentTarget.closest('svg');
+        if (!svg) return;
+
+        const rect = svg.getBoundingClientRect();
+        const clickX = e.clientX - rect.left;
+
+        //Calculate which item was clicked based on position
+        //This is approximate, needs improvement 
+        const itemWidth = spacing / navItems.length;
+        const clickedIndex = Math.floor(clickX / itemWidth) % navItems.length;
+        const clickedItem = navItems[clickedIndex];
+
+        //Handle the click
+        if (clickedItem.href) {
+            window.location.href = clickedItem.href;
+        } else if (clickedItem.onClick) {
+            clickedItem.onClick();
+        }
+    };
   const measureRef = useRef<SVGTextElement | null>(null);
   const textPathRef = useRef<SVGTextPathElement | null>(null);
   const pathRef = useRef<SVGPathElement | null>(null);
@@ -126,7 +182,13 @@ const CurvedLoop: FC<CurvedLoopProps> = ({
           <path ref={pathRef} id={pathId} d={pathD} fill="none" stroke="transparent" />
         </defs>
         {ready && (
-          <text fontWeight="bold" xmlSpace="preserve" className={className}>
+          <text 
+          fontWeight="bold" 
+          xmlSpace="preserve" 
+          className={className}
+          onClick={handleTextClick}  // ADD THIS LINE
+          style={{ cursor: 'pointer' }}  // ADD THIS LINE
+        >
             <textPath ref={textPathRef} href={`#${pathId}`} startOffset={offset + 'px'} xmlSpace="preserve">
               {totalText}
             </textPath>
