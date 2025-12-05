@@ -1,6 +1,10 @@
 'use client';
 //import for resume section
 import { gsap } from 'gsap';
+import { Viewer, Worker } from '@react-pdf-viewer/core';
+import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
+import '@react-pdf-viewer/core/lib/styles/index.css';
+import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 
 //background and curvedloop
 import Squares from '@/components/Squares';
@@ -26,6 +30,8 @@ import GradientText from '@/components/GradientText';
 //ShuffleText
 import Shuffle from '@/components/Shuffle';
 
+//PDF Viewer
+const defaultLayoutPluginInstance = defaultLayoutPlugin();
 
 export default function Home() {
   const [showToast, setShowToast] = useState(false);
@@ -141,8 +147,15 @@ export default function Home() {
       {/* Resume Section */}
       <section id="resume" className="min-h-screen relative z-10 flex items-center justify-center">
         <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold mb-8 text-center">Resume</h2>
-          {/* PDF Viewer will go here in the next step */}
+          <h2 className="text-5xl font-bold mb-8 text-center">My Resume</h2>
+          <div className="w-full max-w-4xl mx-auto" style={{ height: '800px' }}>
+            <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
+              <Viewer
+                fileUrl="/resume.pdf"
+                plugins={[defaultLayoutPluginInstance]}
+              />
+            </Worker>
+          </div>
         </div>
       </section>
 

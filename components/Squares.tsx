@@ -54,25 +54,18 @@ const Squares: React.FC<SquaresProps> = ({
       const startX = Math.floor(gridOffset.current.x / squareSize) * squareSize;
       const startY = Math.floor(gridOffset.current.y / squareSize) * squareSize;
 
+      // Draw all squares first
       for (let x = startX; x < canvas.width + squareSize; x += squareSize) {
         for (let y = startY; y < canvas.height + squareSize; y += squareSize) {
           const squareX = x - (gridOffset.current.x % squareSize);
           const squareY = y - (gridOffset.current.y % squareSize);
-
-          if (
-            hoveredSquareRef.current &&
-            Math.floor((x - startX) / squareSize) === hoveredSquareRef.current.x &&
-            Math.floor((y - startY) / squareSize) === hoveredSquareRef.current.y
-          ) {
-            ctx.fillStyle = hoverFillColor;
-            ctx.fillRect(squareX, squareY, squareSize, squareSize);
-          }
 
           ctx.strokeStyle = borderColor;
           ctx.strokeRect(squareX, squareY, squareSize, squareSize);
         }
       }
 
+      // Draw gradient overlay
       const gradient = ctx.createRadialGradient(
         canvas.width / 2,
         canvas.height / 2,
@@ -86,6 +79,21 @@ const Squares: React.FC<SquaresProps> = ({
 
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Draw hovered square on top (after gradient) so it's visible
+      if (hoveredSquareRef.current) {
+        const hoveredX = startX + (hoveredSquareRef.current.x * squareSize);
+        const hoveredY = startY + (hoveredSquareRef.current.y * squareSize);
+        const squareX = hoveredX - (gridOffset.current.x % squareSize);
+        const squareY = hoveredY - (gridOffset.current.y % squareSize);
+
+        ctx.fillStyle = hoverFillColor;
+        ctx.fillRect(squareX, squareY, squareSize, squareSize);
+        
+        // Redraw the border on top of the fill
+        ctx.strokeStyle = borderColor;
+        ctx.strokeRect(squareX, squareY, squareSize, squareSize);
+      }
     };
 
     const updateAnimation = () => {
