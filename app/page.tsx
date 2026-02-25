@@ -665,7 +665,7 @@ export default function Home() {
                 organization="Georgia Institute of Technology"
                 location="Atlanta, Georgia"
                 period="Jan 2026 – May 2027"
-                logo="/gtech.jpg"
+                logo="/gtech.png"
               />
               <ExperienceCard
                 type="education"
@@ -689,7 +689,7 @@ export default function Home() {
                 organization="Georgia Institute of Technology"
                 location="Remote"
                 period="Jan 2026 – Ongoing"
-                logo="/gtech.jpg"
+                logo="/gtech.png"
                 details={[
                   "Researching neural decision trees for multimodal medical AI, producing concept-level reasoning on patient data (MIMIC-IV).",
                 ]}
