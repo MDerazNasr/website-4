@@ -42,6 +42,8 @@ import Shuffle from "@/components/Shuffle";
 import Carousel, { CarouselItem } from "@/components/Carousel";
 //ReflectiveCard
 import ReflectiveCard from "@/components/ReflectiveCard";
+//ProjectBento
+import ProjectBento from "@/components/ProjectBento";
 
 //PDF Viewer - using iframe instead
 // const defaultLayoutPluginInstance = defaultLayoutPlugin();
@@ -279,25 +281,14 @@ export default function Home() {
           <h2 className="text-5xl font-bold mb-16 text-center uppercase">
             My Projects
           </h2>
-          <div
-            className="overflow-x-auto pb-8"
-            style={{
-              scrollbarWidth: "thin",
-              scrollbarColor: "#555 transparent",
-            }}
-          >
-            <div className="flex gap-8 px-8" style={{ width: "max-content" }}>
-              {projects.map((project) => (
-                <ReflectiveCard
-                  key={project.id}
-                  title={project.title}
-                  description={project.description}
-                  repoUrl={project.repoUrl}
-                  techStack={project.techStack}
-                />
-              ))}
-            </div>
-          </div>
+          <ProjectBento
+            projects={projects}
+            enableSpotlight={true}
+            enableBorderGlow={true}
+            clickEffect={true}
+            spotlightRadius={400}
+            glowColor="132, 0, 255"
+          />
         </div>
       </section>
 
