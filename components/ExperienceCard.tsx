@@ -1,11 +1,11 @@
 "use client";
 
-import React from 'react';
-import styled from 'styled-components';
-import Image from 'next/image';
+import React from "react";
+import styled from "styled-components";
+import Image from "next/image";
 
 interface ExperienceCardProps {
-  type: 'education' | 'experience';
+  type: "education" | "experience";
   title: string;
   organization: string;
   location: string;
@@ -15,7 +15,16 @@ interface ExperienceCardProps {
   gpa?: string;
 }
 
-const ExperienceCard = ({ type, title, organization, location, period, logo, details, gpa }: ExperienceCardProps) => {
+const ExperienceCard = ({
+  type,
+  title,
+  organization,
+  location,
+  period,
+  logo,
+  details,
+  gpa,
+}: ExperienceCardProps) => {
   return (
     <StyledWrapper>
       <div className="card">
@@ -44,12 +53,12 @@ const ExperienceCard = ({ type, title, organization, location, period, logo, det
       </div>
     </StyledWrapper>
   );
-}
+};
 
 const StyledWrapper = styled.div`
   .card {
     width: 100%;
-    min-height: 300px;
+    min-height: 180px;
     background: #171717;
     display: flex;
     justify-content: center;
@@ -58,33 +67,33 @@ const StyledWrapper = styled.div`
     cursor: pointer;
     position: relative;
     overflow: hidden;
-    border-radius: 10px;
-    margin-bottom: 20px;
+    border-radius: 8px;
+    margin-bottom: 12px;
   }
 
   .card .content {
-    border-radius: 10px;
+    border-radius: 8px;
     background: #171717;
-    width: calc(100% - 8px);
-    min-height: calc(300px - 4px);
+    width: calc(100% - 6px);
+    min-height: calc(180px - 6px);
     z-index: 1;
-    padding: 30px;
+    padding: 20px;
     color: white;
     display: flex;
-    gap: 30px;
+    gap: 20px;
     position: relative;
   }
 
   .logo-container {
     flex-shrink: 0;
-    width: 120px;
-    height: 120px;
+    width: 80px;
+    height: 80px;
     background: white;
-    border-radius: 10px;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    padding: 12px;
   }
 
   .logo {
@@ -97,18 +106,19 @@ const StyledWrapper = styled.div`
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 6px;
   }
 
   .title {
-    font-size: 1.5rem;
+    font-size: 1.1rem;
     font-weight: bold;
     margin: 0;
     color: #ff00ff;
+    line-height: 1.3;
   }
 
   .organization {
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 600;
     margin: 0;
     color: #ffffff;
@@ -116,13 +126,13 @@ const StyledWrapper = styled.div`
 
   .meta {
     display: flex;
-    gap: 20px;
-    font-size: 0.9rem;
+    gap: 15px;
+    font-size: 0.8rem;
     color: #aaaaaa;
   }
 
   .gpa {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     color: #aaaaaa;
     margin: 0;
   }
@@ -130,17 +140,17 @@ const StyledWrapper = styled.div`
   .details {
     list-style: none;
     padding: 0;
-    margin: 10px 0 0 0;
+    margin: 6px 0 0 0;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 4px;
   }
 
   .details li {
-    font-size: 0.95rem;
-    line-height: 1.5;
+    font-size: 0.85rem;
+    line-height: 1.4;
     color: #cccccc;
-    padding-left: 20px;
+    padding-left: 15px;
     position: relative;
   }
 
