@@ -44,8 +44,7 @@ import Carousel, { CarouselItem } from "@/components/Carousel";
 import ReflectiveCard from "@/components/ReflectiveCard";
 //ProjectBento
 import ProjectBento from "@/components/ProjectBento";
-//LeetCode
-import { UserHeatMap } from "react-leetcode";
+//LeetCode - not using react-leetcode due to CORS issues
 //GitHub Contribution Graph
 import {
   ContributionGraph,
@@ -58,6 +57,115 @@ import { cn } from "@/lib/utils";
 
 //PDF Viewer - using iframe instead
 // const defaultLayoutPluginInstance = defaultLayoutPlugin();
+
+// LeetCode Stats Component
+const LeetCodeStats = ({ username }: { username: string }) => {
+  const [stats, setStats] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchLeetCodeStats = async () => {
+      try {
+        const query = `
+          query getUserProfile($username: String!) {
+            matchedUser(username: $username) {
+              username
+              submitStatsGlobal {
+                acSubmissionNum {
+                  difficulty
+                  count
+                }
+              }
+            }
+          }
+        `;
+
+        const response = await fetch("https://leetcode.com/graphql", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            query,
+            variables: { username },
+          }),
+        });
+
+        const result = await response.json();
+        setStats(result.data?.matchedUser);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching LeetCode stats:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchLeetCodeStats();
+  }, [username]);
+
+  if (loading) {
+    return <div className="text-white/70">Loading LeetCode stats...</div>;
+  }
+
+  if (!stats) {
+    return (
+      <div className="text-white/70">
+        <p>Unable to load LeetCode stats.</p>
+        <a
+          href={`https://leetcode.com/${username}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[#ff00ff] hover:underline"
+        >
+          View on LeetCode
+        </a>
+      </div>
+    );
+  }
+
+  const submissions = stats.submitStatsGlobal?.acSubmissionNum || [];
+  const easy =
+    submissions.find((s: any) => s.difficulty === "Easy")?.count || 0;
+  const medium =
+    submissions.find((s: any) => s.difficulty === "Medium")?.count || 0;
+  const hard =
+    submissions.find((s: any) => s.difficulty === "Hard")?.count || 0;
+  const total =
+    submissions.find((s: any) => s.difficulty === "All")?.count || 0;
+
+  return (
+    <div className="space-y-6">
+      <div className="text-center">
+        <h4 className="text-3xl font-bold text-[#ff00ff]">{total}</h4>
+        <p className="text-white/70 text-sm">Problems Solved</p>
+      </div>
+      <div className="grid grid-cols-3 gap-4">
+        <div className="bg-[#262626] rounded-lg p-4 text-center">
+          <div className="text-2xl font-bold text-green-400">{easy}</div>
+          <div className="text-white/70 text-sm">Easy</div>
+        </div>
+        <div className="bg-[#262626] rounded-lg p-4 text-center">
+          <div className="text-2xl font-bold text-yellow-400">{medium}</div>
+          <div className="text-white/70 text-sm">Medium</div>
+        </div>
+        <div className="bg-[#262626] rounded-lg p-4 text-center">
+          <div className="text-2xl font-bold text-red-400">{hard}</div>
+          <div className="text-white/70 text-sm">Hard</div>
+        </div>
+      </div>
+      <div className="text-center">
+        <a
+          href={`https://leetcode.com/${username}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[#ff00ff] hover:underline text-sm"
+        >
+          View full profile on LeetCode →
+        </a>
+      </div>
+    </div>
+  );
+};
 
 // GitHub Contribution Graph Component
 const GitHubContributionGraph = ({ username }: { username: string }) => {
@@ -475,26 +583,13 @@ export default function Home() {
               </div>
             </div>
 
-            {/* LeetCode Heatmap */}
+            {/* LeetCode Stats */}
             <div className="bg-[#1a1a1a] border border-[#333333] rounded-lg p-8">
               <h3 className="text-2xl font-bold mb-6 uppercase">
                 LeetCode Progress
               </h3>
               <div className="flex justify-center">
-                <UserHeatMap
-                  userName="derazmnasr"
-                  blockSize={12}
-                  blockMargin={4}
-                  fontSize={12}
-                  theme={{
-                    primaryColor: "rgba(255, 0, 255, 1)",
-                    secondaryColor: "rgba(209, 213, 219, 1)",
-                    bgColor: "rgba(26, 26, 26, 1)",
-                  }}
-                  style={{
-                    maxWidth: "100%",
-                  }}
-                />
+                <LeetCodeStats username="derazmnasr" />
               </div>
             </div>
           </div>
