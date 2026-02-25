@@ -116,6 +116,20 @@ export default function Home() {
         },
       ],
     },
+    {
+      id: 4,
+      title: "Financial Research Agent",
+      description:
+        "Architected an agentic financial intelligence system using LangGraph and Gemini 2.0, achieving 100% data fidelity via SEC XBRL extraction and multi-tier cascading API architecture.",
+      repoUrl:
+        "https://github.com/MDerazNasr/finance-intelligence-agentic-system",
+      techStack: [
+        {
+          name: "Python",
+          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg",
+        },
+      ],
+    },
   ];
 
   const handleHomeClick = (e: React.MouseEvent) => {
@@ -178,10 +192,8 @@ export default function Home() {
   const curvedLoopItems = [
     { label: "About Me" },
     { label: "Resume", onClick: scrollToResume },
-    { label: "Education" },
-    { label: "Experience" },
+    { label: "Education + Experience" },
     { label: "Projects", onClick: scrollToProjects },
-    { label: "Contact" },
   ];
 
   // Ensure only one Home button - filter duplicates by label
