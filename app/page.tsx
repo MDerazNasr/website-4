@@ -665,7 +665,7 @@ export default function Home() {
                 organization="Georgia Institute of Technology"
                 location="Atlanta, Georgia"
                 period="Jan 2026 – May 2027"
-                logo="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Georgia_Tech_Yellow_Jackets_logo.svg/1200px-Georgia_Tech_Yellow_Jackets_logo.svg.png"
+                logo="/gtech.jpg"
               />
               <ExperienceCard
                 type="education"
@@ -674,7 +674,7 @@ export default function Home() {
                 location="Ottawa, Canada"
                 period="Sept 2020 – May 2025"
                 gpa="3.5"
-                logo="https://upload.wikimedia.org/wikipedia/en/thumb/4/4b/University_of_Ottawa_Logo.svg/1200px-University_of_Ottawa_Logo.svg.png"
+                logo="/uottawa.png"
               />
             </div>
 
@@ -689,7 +689,7 @@ export default function Home() {
                 organization="Georgia Institute of Technology"
                 location="Remote"
                 period="Jan 2026 – Ongoing"
-                logo="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Georgia_Tech_Yellow_Jackets_logo.svg/1200px-Georgia_Tech_Yellow_Jackets_logo.svg.png"
+                logo="/gtech.jpg"
                 details={[
                   "Researching neural decision trees for multimodal medical AI, producing concept-level reasoning on patient data (MIMIC-IV).",
                 ]}
@@ -714,7 +714,7 @@ export default function Home() {
                 organization="University of Ottawa"
                 location="Ottawa, Canada"
                 period="Sept 2024 – Dec 2024"
-                logo="https://upload.wikimedia.org/wikipedia/en/thumb/4/4b/University_of_Ottawa_Logo.svg/1200px-University_of_Ottawa_Logo.svg.png"
+                logo="/uottawa.png"
                 details={[
                   "Researched distributed & reinforcement learning to accelerate solar energy forecasting and enable adaptive model updates.",
                   "Engineered data pipelines (Python/Go) to process 200K+ solar readings daily with 80% accuracy via Redis caching.",
@@ -727,7 +727,7 @@ export default function Home() {
                 organization="University of Ottawa"
                 location="Ottawa, Canada"
                 period="Sept 2023 – Dec 2023"
-                logo="https://upload.wikimedia.org/wikipedia/en/thumb/4/4b/University_of_Ottawa_Logo.svg/1200px-University_of_Ottawa_Logo.svg.png"
+                logo="/uottawa.png"
                 details={[
                   "Delivered data validation pipelines (Node.js/React Native) for 20K+ students, cutting form submission errors by 30%.",
                   "Redesigned 50K+ record PostgreSQL database pipeline, reducing query latency by 40% under high concurrency.",
@@ -739,7 +739,7 @@ export default function Home() {
                 organization="March Networks"
                 location="Ottawa, Canada"
                 period="Jan 2023 – Apr 2023"
-                logo="https://logo.clearbit.com/marchnetworks.com"
+                logo="/march_networks.png"
                 details={[
                   "Built C/C++ debugging tool (Python/Docker) for RTSP/WebSocket on Linux, boosting model resilience by 25%.",
                   "Developed Node.js/PostgreSQL dashboard to track packet loss and performance across 200+ deployed camera networks.",
@@ -758,7 +758,7 @@ export default function Home() {
                 organization="UOBionics – Allonstride"
                 location="Ottawa, Canada"
                 period="Jan 2024 – Dec 2024"
-                logo="https://images.squarespace-cdn.com/content/v1/5f0b3e7f7f885e2b3a3d3a8e/1594659455374-9XQJZQZ0Z0Z0Z0Z0Z0Z0/UOBionics_Logo.png"
+                logo="/uobionics.jpg"
                 details={[
                   "Engineered embedded C/C++ firmware (STM32/FreeRTOS) for exoskeleton motor & biosensor control (I2C/SPI/UART).",
                   "Built (AWS/Python/WebSockets) pipelines with FastAPI/React dashboard for live anomaly detection on 100K+ signals.",
