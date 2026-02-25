@@ -44,8 +44,6 @@ import Carousel, { CarouselItem } from "@/components/Carousel";
 import ReflectiveCard from "@/components/ReflectiveCard";
 //ProjectBento
 import ProjectBento from "@/components/ProjectBento";
-//GitHub Calendar
-import { GitHubCalendar } from "github-contribution-calendar";
 //LeetCode
 import { UserHeatMap } from "react-leetcode";
 
@@ -328,19 +326,21 @@ export default function Home() {
             About Me
           </h2>
           <div className="max-w-6xl mx-auto space-y-12">
-            {/* GitHub Heatmap */}
+            {/* GitHub Heatmap - Package not available */}
             <div className="bg-[#1a1a1a] border border-[#333333] rounded-lg p-8">
               <h3 className="text-2xl font-bold mb-6 uppercase">
                 GitHub Contributions
               </h3>
-              <div className="flex justify-center">
-                <GitHubCalendar
-                  username="MDerazNasr"
-                  year={2025}
-                  showLabels={true}
-                  fontSize={14}
-                  theme="forest"
-                />
+              <div className="text-white/70 text-center">
+                <p>View my GitHub contributions:</p>
+                <a
+                  href="https://github.com/MDerazNasr"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#ff00ff] hover:underline"
+                >
+                  github.com/MDerazNasr
+                </a>
               </div>
             </div>
 
