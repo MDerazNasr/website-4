@@ -69,10 +69,8 @@ const GitHubContributionGraph = ({ username }: { username: string }) => {
     const fetchGitHubData = async () => {
       try {
         const now = new Date();
-        const fromDate = formatISO(startOfYear(now), {
-          representation: "date",
-        });
-        const toDate = formatISO(now, { representation: "date" });
+        const fromDate = startOfYear(now).toISOString();
+        const toDate = now.toISOString();
 
         const query = `
           query($username: String!, $from: DateTime!, $to: DateTime!) {
