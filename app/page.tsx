@@ -143,6 +143,23 @@ export default function Home() {
         },
       ],
     },
+    {
+      id: 6,
+      title: "This Website!",
+      description:
+        "Built with Next.js, TypeScript, and React featuring interactive components, smooth animations, and modern design patterns.",
+      repoUrl: "https://github.com/MDerazNasr/website-4",
+      techStack: [
+        {
+          name: "TypeScript",
+          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg",
+        },
+        {
+          name: "React",
+          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
+        },
+      ],
+    },
   ];
 
   const handleHomeClick = (e: React.MouseEvent) => {

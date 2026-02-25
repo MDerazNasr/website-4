@@ -158,7 +158,7 @@
     }
 }
 
-/* Desktop: Smart 5-card layout */
+/* Desktop: Smart 6-card layout */
 @media (min-width: 1024px) {
     .project-card-grid {
         grid-template-columns: repeat(4, 1fr);
@@ -193,6 +193,12 @@
     .project-bento-card:nth-child(5) {
         grid-column: 1 / 3;
         grid-row: 1;
+    }
+
+    /* Sixth project: Bottom right corner square */
+    .project-bento-card:nth-child(6) {
+        grid-column: 4 / 5;
+        grid-row: 2;
     }
 }
 
