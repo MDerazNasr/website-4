@@ -351,7 +351,7 @@ export default function Home() {
               </h3>
               <div className="flex justify-center">
                 <UserHeatMap
-                  userName="YOUR_LEETCODE_USERNAME"
+                  userName="derazmnasr"
                   theme={{
                     primaryColor: "rgba(255, 0, 255, 1)",
                     secondaryColor: "rgba(209, 213, 219, 1)",
