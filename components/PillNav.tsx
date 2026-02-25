@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import React, { useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
-import { gsap } from 'gsap';
-import './PillNav.css';
+import React, { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { gsap } from "gsap";
+import "./PillNav.css";
 
 export type PillNavItem = {
   label: string;
@@ -28,14 +28,14 @@ export interface PillNavProps {
 const PillNav: React.FC<PillNavProps> = ({
   items,
   activeHref,
-  className = '',
-  ease = 'power3.easeOut',
-  baseColor = '#fff',
-  pillColor = '#060010',
-  hoveredPillTextColor = '#060010',
+  className = "",
+  ease = "power3.easeOut",
+  baseColor = "#fff",
+  pillColor = "#060010",
+  hoveredPillTextColor = "#060010",
   pillTextColor,
   onMobileMenuClick,
-  initialLoadAnimation = false
+  initialLoadAnimation = false,
 }) => {
   const resolvedPillTextColor = pillTextColor ?? baseColor;
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -48,7 +48,7 @@ const PillNav: React.FC<PillNavProps> = ({
 
   useEffect(() => {
     const layout = () => {
-      circleRefs.current.forEach(circle => {
+      circleRefs.current.forEach((circle) => {
         if (!circle?.parentElement) return;
 
         const pill = circle.parentElement as HTMLElement;
@@ -56,7 +56,8 @@ const PillNav: React.FC<PillNavProps> = ({
         const { width: w, height: h } = rect;
         const R = ((w * w) / 4 + h * h) / (2 * h);
         const D = Math.ceil(2 * R) + 2;
-        const delta = Math.ceil(R - Math.sqrt(Math.max(0, R * R - (w * w) / 4))) + 1;
+        const delta =
+          Math.ceil(R - Math.sqrt(Math.max(0, R * R - (w * w) / 4))) + 1;
         const originY = D - delta;
 
         circle.style.width = `${D}px`;
@@ -66,11 +67,11 @@ const PillNav: React.FC<PillNavProps> = ({
         gsap.set(circle, {
           xPercent: -50,
           scale: 0,
-          transformOrigin: `50% ${originY}px`
+          transformOrigin: `50% ${originY}px`,
         });
 
-        const label = pill.querySelector<HTMLElement>('.pill-label');
-        const white = pill.querySelector<HTMLElement>('.pill-label-hover');
+        const label = pill.querySelector<HTMLElement>(".pill-label");
+        const white = pill.querySelector<HTMLElement>(".pill-label-hover");
 
         if (label) gsap.set(label, { y: 0 });
         if (white) gsap.set(white, { y: h + 12, opacity: 0 });
@@ -81,16 +82,21 @@ const PillNav: React.FC<PillNavProps> = ({
         tlRefs.current[index]?.kill();
         const tl = gsap.timeline({ paused: true });
 
-        tl.to(circle, { scale: 1.2, xPercent: -50, duration: 2, ease, overwrite: 'auto' }, 0);
+        tl.to(
+          circle,
+          { scale: 1.2, xPercent: -50, duration: 2, ease, overwrite: "auto" },
+          0,
+        );
 
-        if (label) {
-          tl.to(label, { y: -(h + 8), duration: 2, ease, overwrite: 'auto' }, 0);
-        }
+        // Remove text movement animation - labels stay in place
+        // if (label) {
+        //   tl.to(label, { y: -(h + 8), duration: 2, ease, overwrite: 'auto' }, 0);
+        // }
 
-        if (white) {
-          gsap.set(white, { y: Math.ceil(h + 100), opacity: 0 });
-          tl.to(white, { y: 0, opacity: 1, duration: 2, ease, overwrite: 'auto' }, 0);
-        }
+        // if (white) {
+        //   gsap.set(white, { y: Math.ceil(h + 100), opacity: 0 });
+        //   tl.to(white, { y: 0, opacity: 1, duration: 2, ease, overwrite: 'auto' }, 0);
+        // }
 
         tlRefs.current[index] = tl;
       });
@@ -99,7 +105,7 @@ const PillNav: React.FC<PillNavProps> = ({
     layout();
 
     const onResize = () => layout();
-    window.addEventListener('resize', onResize);
+    window.addEventListener("resize", onResize);
 
     if (document.fonts?.ready) {
       document.fonts.ready.then(layout).catch(() => {});
@@ -107,23 +113,23 @@ const PillNav: React.FC<PillNavProps> = ({
 
     const menu = mobileMenuRef.current;
     if (menu) {
-      gsap.set(menu, { visibility: 'hidden', opacity: 0, scaleY: 1 });
+      gsap.set(menu, { visibility: "hidden", opacity: 0, scaleY: 1 });
     }
 
     if (initialLoadAnimation) {
       const navItems = navItemsRef.current;
 
       if (navItems) {
-        gsap.set(navItems, { width: 0, overflow: 'hidden' });
+        gsap.set(navItems, { width: 0, overflow: "hidden" });
         gsap.to(navItems, {
-          width: 'auto',
+          width: "auto",
           duration: 0.6,
-          ease
+          ease,
         });
       }
     }
 
-    return () => window.removeEventListener('resize', onResize);
+    return () => window.removeEventListener("resize", onResize);
   }, [items, ease, initialLoadAnimation]);
 
   const handleEnter = (i: number) => {
@@ -133,7 +139,7 @@ const PillNav: React.FC<PillNavProps> = ({
     activeTweenRefs.current[i] = tl.tweenTo(tl.duration(), {
       duration: 0.8,
       ease,
-      overwrite: 'auto'
+      overwrite: "auto",
     });
   };
 
@@ -144,7 +150,7 @@ const PillNav: React.FC<PillNavProps> = ({
     activeTweenRefs.current[i] = tl.tweenTo(0, {
       duration: 0.6,
       ease,
-      overwrite: 'auto'
+      overwrite: "auto",
     });
   };
 
@@ -156,7 +162,7 @@ const PillNav: React.FC<PillNavProps> = ({
     const menu = mobileMenuRef.current;
 
     if (hamburger) {
-      const lines = hamburger.querySelectorAll('.hamburger-line');
+      const lines = hamburger.querySelectorAll(".hamburger-line");
       if (newState) {
         gsap.to(lines[0], { rotation: 45, y: 3, duration: 0.3, ease });
         gsap.to(lines[1], { rotation: -45, y: -3, duration: 0.3, ease });
@@ -168,7 +174,7 @@ const PillNav: React.FC<PillNavProps> = ({
 
     if (menu) {
       if (newState) {
-        gsap.set(menu, { visibility: 'visible' });
+        gsap.set(menu, { visibility: "visible" });
         gsap.fromTo(
           menu,
           { opacity: 0, y: 10, scaleY: 1 },
@@ -178,8 +184,8 @@ const PillNav: React.FC<PillNavProps> = ({
             scaleY: 1,
             duration: 0.3,
             ease,
-            transformOrigin: 'top center'
-          }
+            transformOrigin: "top center",
+          },
         );
       } else {
         gsap.to(menu, {
@@ -188,10 +194,10 @@ const PillNav: React.FC<PillNavProps> = ({
           scaleY: 1,
           duration: 0.2,
           ease,
-          transformOrigin: 'top center',
+          transformOrigin: "top center",
           onComplete: () => {
-            gsap.set(menu, { visibility: 'hidden' });
-          }
+            gsap.set(menu, { visibility: "hidden" });
+          },
         });
       }
     }
@@ -200,25 +206,29 @@ const PillNav: React.FC<PillNavProps> = ({
   };
 
   const isExternalLink = (href: string) =>
-    href.startsWith('http://') ||
-    href.startsWith('https://') ||
-    href.startsWith('//') ||
-    href.startsWith('mailto:') ||
-    href.startsWith('tel:') ||
-    href.startsWith('#');
+    href.startsWith("http://") ||
+    href.startsWith("https://") ||
+    href.startsWith("//") ||
+    href.startsWith("mailto:") ||
+    href.startsWith("tel:") ||
+    href.startsWith("#");
 
   const isRouterLink = (href?: string) => href && !isExternalLink(href);
 
   const cssVars = {
-    ['--base']: baseColor,
-    ['--pill-bg']: pillColor,
-    ['--hover-text']: hoveredPillTextColor,
-    ['--pill-text']: resolvedPillTextColor
+    ["--base"]: baseColor,
+    ["--pill-bg"]: pillColor,
+    ["--hover-text"]: hoveredPillTextColor,
+    ["--pill-text"]: resolvedPillTextColor,
   } as React.CSSProperties;
 
   return (
     <div className="pill-nav-container">
-      <nav className={`pill-nav ${className}`} aria-label="Primary" style={cssVars}>
+      <nav
+        className={`pill-nav ${className}`}
+        aria-label="Primary"
+        style={cssVars}
+      >
         <div className="pill-nav-items" ref={navItemsRef}>
           <ul className="pill-list" role="menubar">
             {items.map((item, i) => (
@@ -227,7 +237,7 @@ const PillNav: React.FC<PillNavProps> = ({
                   <Link
                     href={item.href}
                     role="menuitem"
-                    className={`pill${activeHref === item.href ? ' is-active' : ''}`}
+                    className={`pill${activeHref === item.href ? " is-active" : ""}`}
                     aria-label={item.ariaLabel || item.label}
                     onMouseEnter={() => handleEnter(i)}
                     onMouseLeave={() => handleLeave(i)}
@@ -242,7 +252,7 @@ const PillNav: React.FC<PillNavProps> = ({
                     <span
                       className="hover-circle"
                       aria-hidden="true"
-                      ref={el => {
+                      ref={(el) => {
                         circleRefs.current[i] = el;
                       }}
                     />
@@ -257,7 +267,7 @@ const PillNav: React.FC<PillNavProps> = ({
                   <a
                     role="menuitem"
                     href={item.href}
-                    className={`pill${activeHref === item.href ? ' is-active' : ''}`}
+                    className={`pill${activeHref === item.href ? " is-active" : ""}`}
                     aria-label={item.ariaLabel || item.label}
                     onMouseEnter={() => handleEnter(i)}
                     onMouseLeave={() => handleLeave(i)}
@@ -272,7 +282,7 @@ const PillNav: React.FC<PillNavProps> = ({
                     <span
                       className="hover-circle"
                       aria-hidden="true"
-                      ref={el => {
+                      ref={(el) => {
                         circleRefs.current[i] = el;
                       }}
                     />
@@ -300,14 +310,18 @@ const PillNav: React.FC<PillNavProps> = ({
         </button>
       </nav>
 
-      <div className="mobile-menu-popover mobile-only" ref={mobileMenuRef} style={cssVars}>
+      <div
+        className="mobile-menu-popover mobile-only"
+        ref={mobileMenuRef}
+        style={cssVars}
+      >
         <ul className="mobile-menu-list">
-          {items.map(item => (
+          {items.map((item) => (
             <li key={item.href}>
               {isRouterLink(item.href) ? (
                 <Link
                   href={item.href}
-                  className={`mobile-menu-link${activeHref === item.href ? ' is-active' : ''}`}
+                  className={`mobile-menu-link${activeHref === item.href ? " is-active" : ""}`}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {item.label}
@@ -315,7 +329,7 @@ const PillNav: React.FC<PillNavProps> = ({
               ) : (
                 <a
                   href={item.href}
-                  className={`mobile-menu-link${activeHref === item.href ? ' is-active' : ''}`}
+                  className={`mobile-menu-link${activeHref === item.href ? " is-active" : ""}`}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {item.label}
