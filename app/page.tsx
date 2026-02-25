@@ -38,12 +38,81 @@ import ASCIIText from "@/components/ASCIIText";
 import GradientText from "@/components/GradientText";
 //ShuffleText
 import Shuffle from "@/components/Shuffle";
+//Carousel
+import Carousel, { CarouselItem } from "@/components/Carousel";
 
 //PDF Viewer - using iframe instead
 // const defaultLayoutPluginInstance = defaultLayoutPlugin();
 
 export default function Home() {
   const [showToast, setShowToast] = useState(false);
+
+  // Projects data - replace with your actual projects
+  const projects: CarouselItem[] = [
+    {
+      id: 1,
+      title: "Affinity Map",
+      description:
+        "Trained a few-shot protein embedding model with UMAP visualization to explore functional similarities across protein families.",
+      repoUrl: "https://github.com/MDerazNasr/Protein-fewshot",
+      techStack: [
+        {
+          name: "Python",
+          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg",
+        },
+        {
+          name: "PyTorch",
+          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pytorch/pytorch-original.svg",
+        },
+        {
+          name: "NumPy",
+          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/numpy/numpy-original.svg",
+        },
+      ],
+    },
+    {
+      id: 2,
+      title: "RL Race Simulator",
+      description:
+        "Designed multi-threaded race sim running 10K+ epochs, outperforming baseline strategies with 4x faster training throughput.",
+      repoUrl: "https://github.com/MDerazNasr/Race-Strategy-Simulator",
+      techStack: [
+        {
+          name: "Python",
+          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg",
+        },
+        {
+          name: "PyTorch",
+          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pytorch/pytorch-original.svg",
+        },
+        {
+          name: "TypeScript",
+          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg",
+        },
+      ],
+    },
+    {
+      id: 3,
+      title: "Protein Diffusion",
+      description:
+        "Built diffusion-driven protein generator enabling fast 3D structure generation, conditioning, and biological plausibility scoring.",
+      repoUrl: "https://github.com/MDerazNasr/Protein-Diffusion",
+      techStack: [
+        {
+          name: "Python",
+          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg",
+        },
+        {
+          name: "PyTorch",
+          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pytorch/pytorch-original.svg",
+        },
+        {
+          name: "C++",
+          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg",
+        },
+      ],
+    },
+  ];
 
   const handleHomeClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -82,11 +151,33 @@ export default function Home() {
       });
     }
   };
+
+  const scrollToProjects = () => {
+    const projectsSection = document.getElementById("projects");
+    if (projectsSection) {
+      const targetY = projectsSection.offsetTop;
+      const startY = window.scrollY;
+
+      const scrollObj = { y: startY };
+
+      gsap.to(scrollObj, {
+        y: targetY,
+        duration: 1.5,
+        ease: "power2.inOut",
+        onUpdate: () => {
+          window.scrollTo(0, scrollObj.y);
+        },
+      });
+    }
+  };
+
   const curvedLoopItems = [
     { label: "About Me" },
     { label: "Resume", onClick: scrollToResume },
-    { label: "Education + Experience" },
-    { label: "Projects" },
+    { label: "Education" },
+    { label: "Experience" },
+    { label: "Projects", onClick: scrollToProjects },
+    { label: "Contact" },
   ];
 
   // Ensure only one Home button - filter duplicates by label
@@ -172,6 +263,27 @@ export default function Home() {
               src="/resume.pdf#zoom=100"
               className="w-full h-full"
               title="Resume PDF"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Projects Section */}
+      <section
+        id="projects"
+        className="min-h-screen relative z-10 flex items-center justify-center pointer-events-auto"
+      >
+        <div className="container mx-auto px-4 py-16">
+          <h2 className="text-5xl font-bold mb-16 text-center uppercase">
+            My Projects
+          </h2>
+          <div className="flex justify-center">
+            <Carousel
+              items={projects}
+              baseWidth={400}
+              autoplay={false}
+              loop={true}
+              round={false}
             />
           </div>
         </div>
