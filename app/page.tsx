@@ -44,6 +44,8 @@ import Carousel, { CarouselItem } from "@/components/Carousel";
 import ReflectiveCard from "@/components/ReflectiveCard";
 //ProjectBento
 import ProjectBento from "@/components/ProjectBento";
+//ExperienceCard
+import ExperienceCard from "@/components/ExperienceCard";
 //LeetCode - using custom component due to CORS issues with react-leetcode
 //GitHub Contribution Graph
 import {
@@ -515,10 +517,31 @@ export default function Home() {
     }
   };
 
+  const scrollToEducationExperience = () => {
+    const educationExperienceSection = document.getElementById(
+      "education-experience",
+    );
+    if (educationExperienceSection) {
+      const targetY = educationExperienceSection.offsetTop;
+      const startY = window.scrollY;
+
+      const scrollObj = { y: startY };
+
+      gsap.to(scrollObj, {
+        y: targetY,
+        duration: 1.5,
+        ease: "power2.inOut",
+        onUpdate: () => {
+          window.scrollTo(0, scrollObj.y);
+        },
+      });
+    }
+  };
+
   const curvedLoopItems = [
     { label: "About Me", onClick: scrollToAboutMe },
     { label: "Resume", onClick: scrollToResume },
-    { label: "Education + Experience" },
+    { label: "Education + Experience", onClick: scrollToEducationExperience },
     { label: "Projects", onClick: scrollToProjects },
   ];
 
@@ -616,6 +639,131 @@ export default function Home() {
               <div className="flex justify-start">
                 <LeetCodeHeatmap username="derazmnasr" />
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Education & Experience Section */}
+      <section
+        id="education-experience"
+        className="min-h-screen relative z-10 flex items-center justify-center pointer-events-auto"
+      >
+        <div className="container mx-auto px-4 py-16">
+          <h2 className="text-5xl font-bold mb-16 text-center uppercase">
+            Education & Experience
+          </h2>
+          <div className="max-w-6xl mx-auto space-y-8">
+            {/* Education */}
+            <div>
+              <h3 className="text-3xl font-bold mb-8 text-[#ff00ff] uppercase">
+                Education
+              </h3>
+              <ExperienceCard
+                type="education"
+                title="MSc Computer Science (Machine Learning Track)"
+                organization="Georgia Institute of Technology"
+                location="Atlanta, Georgia"
+                period="Jan 2026 – May 2027"
+                logo="https://brand.gatech.edu/sites/default/files/inline-images/extended-RGB.png"
+              />
+              <ExperienceCard
+                type="education"
+                title="BSc Software Engineering"
+                organization="University of Ottawa"
+                location="Ottawa, Canada"
+                period="Sept 2020 – May 2025"
+                gpa="3.5"
+                logo="https://www2.uottawa.ca/brand/sites/default/files/uottawa_ver_black.png"
+              />
+            </div>
+
+            {/* Experience */}
+            <div>
+              <h3 className="text-3xl font-bold mb-8 text-[#ff00ff] uppercase">
+                Experience
+              </h3>
+              <ExperienceCard
+                type="experience"
+                title="Machine Learning Researcher"
+                organization="Georgia Institute of Technology"
+                location="Remote"
+                period="Jan 2026 – Ongoing"
+                logo="https://brand.gatech.edu/sites/default/files/inline-images/extended-RGB.png"
+                details={[
+                  "Researching neural decision trees for multimodal medical AI, producing concept-level reasoning on patient data (MIMIC-IV).",
+                ]}
+              />
+              <ExperienceCard
+                type="experience"
+                title="Machine Learning Engineer Intern"
+                organization="Shopify"
+                location="Ottawa, Canada"
+                period="Jan 2025 – Apr 2025"
+                logo="https://cdn.worldvectorlogo.com/logos/shopify.svg"
+                details={[
+                  "Prototyped PyTorch LLM to convert natural language to SQL, reducing querying time by 80% across 1M+ merchant data.",
+                  "Built ML pipelines (Python, SARIMA, Airflow, SQL) to forecast business metrics, improving accuracy by 7% across 5+ teams.",
+                  "Reduced model response time by 35% (Redis, Docker) to optimize real-time XGBoost predictions for merchant dashboards.",
+                  "Presented product to 20+ senior/staff engineers and team leads at cross-team review, earning highest performance grade.",
+                ]}
+              />
+              <ExperienceCard
+                type="experience"
+                title="Research Engineer Intern (Supervised by Prof. Kalonji)"
+                organization="University of Ottawa"
+                location="Ottawa, Canada"
+                period="Sept 2024 – Dec 2024"
+                logo="https://www2.uottawa.ca/brand/sites/default/files/uottawa_ver_black.png"
+                details={[
+                  "Researched distributed & reinforcement learning to accelerate solar energy forecasting and enable adaptive model updates.",
+                  "Engineered data pipelines (Python/Go) to process 200K+ solar readings daily with 80% accuracy via Redis caching.",
+                  "Deployed Next.js/GraphQL real-time dashboard with XGBoost forecasts to monitor model accuracy at <200 ms latency.",
+                ]}
+              />
+              <ExperienceCard
+                type="experience"
+                title="Full Stack Developer Intern"
+                organization="University of Ottawa"
+                location="Ottawa, Canada"
+                period="Sept 2023 – Dec 2023"
+                logo="https://www2.uottawa.ca/brand/sites/default/files/uottawa_ver_black.png"
+                details={[
+                  "Delivered data validation pipelines (Node.js/React Native) for 20K+ students, cutting form submission errors by 30%.",
+                  "Redesigned 50K+ record PostgreSQL database pipeline, reducing query latency by 40% under high concurrency.",
+                ]}
+              />
+              <ExperienceCard
+                type="experience"
+                title="Systems Engineer Intern"
+                organization="March Networks"
+                location="Ottawa, Canada"
+                period="Jan 2023 – Apr 2023"
+                logo="https://www.marchnetworks.com/wp-content/uploads/2020/10/march-networks-logo.svg"
+                details={[
+                  "Built C/C++ debugging tool (Python/Docker) for RTSP/WebSocket on Linux, boosting model resilience by 25%.",
+                  "Developed Node.js/PostgreSQL dashboard to track packet loss and performance across 200+ deployed camera networks.",
+                ]}
+              />
+            </div>
+
+            {/* Extracurriculars */}
+            <div>
+              <h3 className="text-3xl font-bold mb-8 text-[#ff00ff] uppercase">
+                Extracurriculars
+              </h3>
+              <ExperienceCard
+                type="experience"
+                title="Embedded/Software Developer"
+                organization="UOBionics – Allonstride"
+                location="Ottawa, Canada"
+                period="Jan 2024 – Dec 2024"
+                logo="https://www2.uottawa.ca/brand/sites/default/files/uottawa_ver_black.png"
+                details={[
+                  "Engineered embedded C/C++ firmware (STM32/FreeRTOS) for exoskeleton motor & biosensor control (I2C/SPI/UART).",
+                  "Built (AWS/Python/WebSockets) pipelines with FastAPI/React dashboard for live anomaly detection on 100K+ signals.",
+                ]}
+              />
             </div>
           </div>
         </div>
