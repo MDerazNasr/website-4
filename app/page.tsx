@@ -352,12 +352,17 @@ export default function Home() {
               <div className="flex justify-center">
                 <UserHeatMap
                   userName="derazmnasr"
+                  blockSize={12}
+                  blockMargin={4}
+                  fontSize={12}
                   theme={{
                     primaryColor: "rgba(255, 0, 255, 1)",
                     secondaryColor: "rgba(209, 213, 219, 1)",
                     bgColor: "rgba(26, 26, 26, 1)",
                   }}
-                  showUserName={true}
+                  style={{
+                    maxWidth: "100%",
+                  }}
                 />
               </div>
             </div>
