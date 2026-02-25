@@ -44,6 +44,10 @@ import Carousel, { CarouselItem } from "@/components/Carousel";
 import ReflectiveCard from "@/components/ReflectiveCard";
 //ProjectBento
 import ProjectBento from "@/components/ProjectBento";
+//GitHub Calendar
+import { GitHubCalendar } from "github-contribution-calendar";
+//LeetCode
+import { UserHeatMap } from "react-leetcode";
 
 //PDF Viewer - using iframe instead
 // const defaultLayoutPluginInstance = defaultLayoutPlugin();
@@ -329,13 +333,14 @@ export default function Home() {
               <h3 className="text-2xl font-bold mb-6 uppercase">
                 GitHub Contributions
               </h3>
-              <div className="text-white/70">
-                GitHub heatmap will be displayed here once packages are
-                installed.
-                <br />
-                <code className="text-sm">
-                  npm install github-contribution-calendar
-                </code>
+              <div className="flex justify-center">
+                <GitHubCalendar
+                  username="MDerazNasr"
+                  year={2025}
+                  showLabels={true}
+                  fontSize={14}
+                  theme="forest"
+                />
               </div>
             </div>
 
@@ -344,11 +349,16 @@ export default function Home() {
               <h3 className="text-2xl font-bold mb-6 uppercase">
                 LeetCode Progress
               </h3>
-              <div className="text-white/70">
-                LeetCode heatmap will be displayed here once packages are
-                installed.
-                <br />
-                <code className="text-sm">npm install react-leetcode</code>
+              <div className="flex justify-center">
+                <UserHeatMap
+                  userName="YOUR_LEETCODE_USERNAME"
+                  theme={{
+                    primaryColor: "rgba(255, 0, 255, 1)",
+                    secondaryColor: "rgba(209, 213, 219, 1)",
+                    bgColor: "rgba(26, 26, 26, 1)",
+                  }}
+                  showUserName={true}
+                />
               </div>
             </div>
           </div>
