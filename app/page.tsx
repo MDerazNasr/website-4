@@ -222,8 +222,27 @@ export default function Home() {
     }
   };
 
+  const scrollToAboutMe = () => {
+    const aboutMeSection = document.getElementById("about-me");
+    if (aboutMeSection) {
+      const targetY = aboutMeSection.offsetTop;
+      const startY = window.scrollY;
+
+      const scrollObj = { y: startY };
+
+      gsap.to(scrollObj, {
+        y: targetY,
+        duration: 1.5,
+        ease: "power2.inOut",
+        onUpdate: () => {
+          window.scrollTo(0, scrollObj.y);
+        },
+      });
+    }
+  };
+
   const curvedLoopItems = [
-    { label: "About Me" },
+    { label: "About Me", onClick: scrollToAboutMe },
     { label: "Resume", onClick: scrollToResume },
     { label: "Education + Experience" },
     { label: "Projects", onClick: scrollToProjects },
@@ -294,6 +313,47 @@ export default function Home() {
           />
         </div>
       </div>
+
+      {/* About Me Section */}
+      <section
+        id="about-me"
+        className="min-h-screen relative z-10 flex items-center justify-center pointer-events-auto"
+      >
+        <div className="container mx-auto px-4 py-16">
+          <h2 className="text-5xl font-bold mb-16 text-center uppercase">
+            About Me
+          </h2>
+          <div className="max-w-6xl mx-auto space-y-12">
+            {/* GitHub Heatmap */}
+            <div className="bg-[#1a1a1a] border border-[#333333] rounded-lg p-8">
+              <h3 className="text-2xl font-bold mb-6 uppercase">
+                GitHub Contributions
+              </h3>
+              <div className="text-white/70">
+                GitHub heatmap will be displayed here once packages are
+                installed.
+                <br />
+                <code className="text-sm">
+                  npm install github-contribution-calendar
+                </code>
+              </div>
+            </div>
+
+            {/* LeetCode Heatmap */}
+            <div className="bg-[#1a1a1a] border border-[#333333] rounded-lg p-8">
+              <h3 className="text-2xl font-bold mb-6 uppercase">
+                LeetCode Progress
+              </h3>
+              <div className="text-white/70">
+                LeetCode heatmap will be displayed here once packages are
+                installed.
+                <br />
+                <code className="text-sm">npm install react-leetcode</code>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Resume Section */}
       <section
