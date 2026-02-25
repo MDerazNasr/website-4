@@ -44,7 +44,8 @@ import Carousel, { CarouselItem } from "@/components/Carousel";
 import ReflectiveCard from "@/components/ReflectiveCard";
 //ProjectBento
 import ProjectBento from "@/components/ProjectBento";
-//LeetCode - not using react-leetcode due to CORS issues
+//LeetCode
+import { UserHeatMap } from "react-leetcode";
 //GitHub Contribution Graph
 import {
   ContributionGraph,
@@ -583,13 +584,26 @@ export default function Home() {
               </div>
             </div>
 
-            {/* LeetCode Stats */}
+            {/* LeetCode Heatmap */}
             <div className="bg-[#1a1a1a] border border-[#333333] rounded-lg p-8">
               <h3 className="text-2xl font-bold mb-6 uppercase">
                 LeetCode Progress
               </h3>
               <div className="flex justify-center">
-                <LeetCodeStats username="derazmnasr" />
+                <UserHeatMap
+                  userName="derazmnasr"
+                  blockSize={12}
+                  blockMargin={4}
+                  fontSize={12}
+                  theme={{
+                    primaryColor: "rgba(255, 165, 0, 1)",
+                    secondaryColor: "rgba(209, 213, 219, 1)",
+                    bgColor: "rgba(26, 26, 26, 1)",
+                  }}
+                  style={{
+                    maxWidth: "100%",
+                  }}
+                />
               </div>
             </div>
           </div>
