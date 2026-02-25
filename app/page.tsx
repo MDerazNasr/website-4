@@ -287,7 +287,7 @@ export default function Home() {
             enableBorderGlow={true}
             clickEffect={true}
             spotlightRadius={400}
-            glowColor="132, 0, 255"
+            glowColor="255, 0, 255"
           />
         </div>
       </section>
