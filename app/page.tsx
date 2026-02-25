@@ -46,9 +46,88 @@ import ReflectiveCard from "@/components/ReflectiveCard";
 import ProjectBento from "@/components/ProjectBento";
 //LeetCode
 import { UserHeatMap } from "react-leetcode";
+//GitHub Contribution Graph
+import {
+  ContributionGraph,
+  ContributionGraphBlock,
+  ContributionGraphCalendar,
+  ContributionGraphFooter,
+} from "@/components/kibo-ui/contribution-graph";
+import { eachDayOfInterval, endOfYear, formatISO, startOfYear } from "date-fns";
+import { cn } from "@/lib/utils";
 
 //PDF Viewer - using iframe instead
 // const defaultLayoutPluginInstance = defaultLayoutPlugin();
+
+// GitHub Contribution Graph Component
+const GitHubContributionGraph = ({ username }: { username: string }) => {
+  const [data, setData] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchGitHubData = async () => {
+      try {
+        const now = new Date();
+        const days = eachDayOfInterval({
+          start: startOfYear(now),
+          end: now,
+        });
+
+        // Generate mock data for now - you can integrate with GitHub API later
+        const maxCount = 20;
+        const maxLevel = 4;
+
+        const contributionData = days.map((date) => {
+          const c = Math.round(
+            Math.random() * maxCount - Math.random() * (0.8 * maxCount),
+          );
+          const count = Math.max(0, c);
+          const level = Math.ceil((count / maxCount) * maxLevel);
+
+          return {
+            date: formatISO(date, { representation: "date" }),
+            count,
+            level,
+          };
+        });
+
+        setData(contributionData);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching GitHub data:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchGitHubData();
+  }, [username]);
+
+  if (loading) {
+    return <div className="text-white/70">Loading contributions...</div>;
+  }
+
+  return (
+    <ContributionGraph data={data}>
+      <ContributionGraphCalendar>
+        {({ activity, dayIndex, weekIndex }) => (
+          <ContributionGraphBlock
+            activity={activity}
+            className={cn(
+              'data-[level="0"]:fill-[#1a1a1a]',
+              'data-[level="1"]:fill-[rgba(255,0,255,0.25)]',
+              'data-[level="2"]:fill-[rgba(255,0,255,0.5)]',
+              'data-[level="3"]:fill-[rgba(255,0,255,0.75)]',
+              'data-[level="4"]:fill-[rgba(255,0,255,1)]',
+            )}
+            dayIndex={dayIndex}
+            weekIndex={weekIndex}
+          />
+        )}
+      </ContributionGraphCalendar>
+      <ContributionGraphFooter />
+    </ContributionGraph>
+  );
+};
 
 export default function Home() {
   const [showToast, setShowToast] = useState(false);
@@ -326,21 +405,13 @@ export default function Home() {
             About Me
           </h2>
           <div className="max-w-6xl mx-auto space-y-12">
-            {/* GitHub Heatmap - Package not available */}
+            {/* GitHub Contributions */}
             <div className="bg-[#1a1a1a] border border-[#333333] rounded-lg p-8">
               <h3 className="text-2xl font-bold mb-6 uppercase">
                 GitHub Contributions
               </h3>
-              <div className="text-white/70 text-center">
-                <p>View my GitHub contributions:</p>
-                <a
-                  href="https://github.com/MDerazNasr"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[#ff00ff] hover:underline"
-                >
-                  github.com/MDerazNasr
-                </a>
+              <div className="flex justify-center">
+                <GitHubContributionGraph username="MDerazNasr" />
               </div>
             </div>
 
