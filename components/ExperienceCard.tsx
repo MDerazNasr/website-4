@@ -58,7 +58,6 @@ const ExperienceCard = ({
 const StyledWrapper = styled.div`
   .card {
     width: 100%;
-    min-height: 180px;
     background: #171717;
     display: flex;
     justify-content: center;
@@ -75,7 +74,6 @@ const StyledWrapper = styled.div`
     border-radius: 8px;
     background: #171717;
     width: calc(100% - 6px);
-    min-height: calc(180px - 6px);
     z-index: 1;
     padding: 20px;
     color: white;
