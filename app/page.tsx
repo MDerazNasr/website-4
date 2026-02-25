@@ -46,12 +46,6 @@ import ReflectiveCard from "@/components/ReflectiveCard";
 import ProjectBento from "@/components/ProjectBento";
 //LeetCode
 import { UserHeatMap } from "react-leetcode";
-//GitHub Calendar - dynamically imported below to avoid SSR issues
-import dynamic from "next/dynamic";
-
-const GitHubCalendar = dynamic(() => import("github-contribution-calendar"), {
-  ssr: false,
-});
 
 //PDF Viewer - using iframe instead
 // const defaultLayoutPluginInstance = defaultLayoutPlugin();
@@ -332,25 +326,21 @@ export default function Home() {
             About Me
           </h2>
           <div className="max-w-6xl mx-auto space-y-12">
-            {/* GitHub Heatmap */}
+            {/* GitHub Heatmap - Package not available */}
             <div className="bg-[#1a1a1a] border border-[#333333] rounded-lg p-8">
               <h3 className="text-2xl font-bold mb-6 uppercase">
                 GitHub Contributions
               </h3>
-              <div className="flex justify-center">
-                <GitHubCalendar
-                  username="MDerazNasr"
-                  theme={{
-                    level0: "#1a1a1a",
-                    level1: "rgba(255, 0, 255, 0.25)",
-                    level2: "rgba(255, 0, 255, 0.5)",
-                    level3: "rgba(255, 0, 255, 0.75)",
-                    level4: "rgba(255, 0, 255, 1)",
-                  }}
-                  style={{
-                    color: "#ffffff",
-                  }}
-                />
+              <div className="text-white/70 text-center">
+                <p>View my GitHub contributions:</p>
+                <a
+                  href="https://github.com/MDerazNasr"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#ff00ff] hover:underline"
+                >
+                  github.com/MDerazNasr
+                </a>
               </div>
             </div>
 
