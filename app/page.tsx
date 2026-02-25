@@ -281,11 +281,11 @@ const GitHubContributionGraph = ({ username }: { username: string }) => {
           <ContributionGraphBlock
             activity={activity}
             className={cn(
-              'data-[level="0"]:fill-[#1a1a1a]',
-              'data-[level="1"]:fill-[rgba(255,0,255,0.25)]',
-              'data-[level="2"]:fill-[rgba(255,0,255,0.5)]',
-              'data-[level="3"]:fill-[rgba(255,0,255,0.75)]',
-              'data-[level="4"]:fill-[rgba(255,0,255,1)]',
+              'data-[level="0"]:fill-[#ebedf0] dark:data-[level="0"]:fill-[#161b22]',
+              'data-[level="1"]:fill-[#9be9a8] dark:data-[level="1"]:fill-[#0e4429]',
+              'data-[level="2"]:fill-[#40c463] dark:data-[level="2"]:fill-[#006d32]',
+              'data-[level="3"]:fill-[#30a14e] dark:data-[level="3"]:fill-[#26a641]',
+              'data-[level="4"]:fill-[#216e39] dark:data-[level="4"]:fill-[#39d353]',
             )}
             dayIndex={dayIndex}
             weekIndex={weekIndex}
@@ -578,7 +578,7 @@ export default function Home() {
               <h3 className="text-2xl font-bold mb-6 uppercase">
                 GitHub Contributions
               </h3>
-              <div className="flex justify-center">
+              <div className="flex justify-start">
                 <GitHubContributionGraph username="MDerazNasr" />
               </div>
             </div>
