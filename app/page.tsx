@@ -674,7 +674,7 @@ export default function Home() {
                 location="Ottawa, Canada"
                 period="Sept 2020 – May 2025"
                 gpa="3.5"
-                logo="/uottawa.png"
+                logo="/uottawa.jpg"
               />
             </div>
 
@@ -714,7 +714,7 @@ export default function Home() {
                 organization="University of Ottawa"
                 location="Ottawa, Canada"
                 period="Sept 2024 – Dec 2024"
-                logo="/uottawa.png"
+                logo="/uottawa.jpg"
                 details={[
                   "Researched distributed & reinforcement learning to accelerate solar energy forecasting and enable adaptive model updates.",
                   "Engineered data pipelines (Python/Go) to process 200K+ solar readings daily with 80% accuracy via Redis caching.",
@@ -727,7 +727,7 @@ export default function Home() {
                 organization="University of Ottawa"
                 location="Ottawa, Canada"
                 period="Sept 2023 – Dec 2023"
-                logo="/uottawa.png"
+                logo="/uottawa.jpg"
                 details={[
                   "Delivered data validation pipelines (Node.js/React Native) for 20K+ students, cutting form submission errors by 30%.",
                   "Redesigned 50K+ record PostgreSQL database pipeline, reducing query latency by 40% under high concurrency.",
