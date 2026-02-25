@@ -146,8 +146,7 @@ export default function Home() {
     {
       id: 6,
       title: "This Website!",
-      description:
-        "Built with Next.js, TypeScript, and React featuring interactive components, smooth animations, and modern design patterns.",
+      description: "",
       repoUrl: "https://github.com/MDerazNasr/website-4",
       techStack: [
         {
