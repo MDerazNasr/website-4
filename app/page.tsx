@@ -58,23 +58,20 @@ import { cn } from "@/lib/utils";
 //PDF Viewer - using iframe instead
 // const defaultLayoutPluginInstance = defaultLayoutPlugin();
 
-// LeetCode Stats Component
-const LeetCodeStats = ({ username }: { username: string }) => {
-  const [stats, setStats] = useState<any>(null);
+// LeetCode Heatmap Component
+const LeetCodeHeatmap = ({ username }: { username: string }) => {
+  const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchLeetCodeStats = async () => {
+    const fetchLeetCodeData = async () => {
       try {
         const query = `
-          query getUserProfile($username: String!) {
+          query userProfileCalendar($username: String!) {
             matchedUser(username: $username) {
-              username
-              submitStatsGlobal {
-                acSubmissionNum {
-                  difficulty
-                  count
-                }
+              userCalendar {
+                submissionCalendar
               }
             }
           }
@@ -92,26 +89,58 @@ const LeetCodeStats = ({ username }: { username: string }) => {
         });
 
         const result = await response.json();
-        console.log("LeetCode API response:", result);
-        setStats(result.data?.matchedUser);
+
+        if (result.errors) {
+          throw new Error(result.errors[0]?.message || "LeetCode API error");
+        }
+
+        const submissionCalendar = JSON.parse(
+          result.data?.matchedUser?.userCalendar?.submissionCalendar || "{}",
+        );
+
+        const now = new Date();
+        const days = eachDayOfInterval({
+          start: startOfYear(now),
+          end: now,
+        });
+
+        const contributionData = days.map((date) => {
+          const dateKey = Math.floor(date.getTime() / 1000).toString();
+          const count = submissionCalendar[dateKey] || 0;
+          const maxCount = 20;
+          const maxLevel = 4;
+          const level =
+            count === 0
+              ? 0
+              : Math.min(Math.ceil((count / maxCount) * maxLevel), maxLevel);
+
+          return {
+            date: formatISO(date, { representation: "date" }),
+            count,
+            level,
+          };
+        });
+
+        setData(contributionData);
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching LeetCode stats:", error);
+        console.error("Error fetching LeetCode data:", error);
+        setError(error instanceof Error ? error.message : "Failed to load");
         setLoading(false);
       }
     };
 
-    fetchLeetCodeStats();
+    fetchLeetCodeData();
   }, [username]);
 
   if (loading) {
-    return <div className="text-white/70">Loading LeetCode stats...</div>;
+    return <div className="text-white/70">Loading LeetCode heatmap...</div>;
   }
 
-  if (!stats) {
+  if (error) {
     return (
       <div className="text-white/70">
-        <p>Unable to load LeetCode stats.</p>
+        <p>Unable to load LeetCode heatmap.</p>
         <a
           href={`https://leetcode.com/${username}`}
           target="_blank"
@@ -124,47 +153,26 @@ const LeetCodeStats = ({ username }: { username: string }) => {
     );
   }
 
-  const submissions = stats.submitStatsGlobal?.acSubmissionNum || [];
-  const easy =
-    submissions.find((s: any) => s.difficulty === "Easy")?.count || 0;
-  const medium =
-    submissions.find((s: any) => s.difficulty === "Medium")?.count || 0;
-  const hard =
-    submissions.find((s: any) => s.difficulty === "Hard")?.count || 0;
-  const total =
-    submissions.find((s: any) => s.difficulty === "All")?.count || 0;
-
   return (
-    <div className="space-y-6">
-      <div className="text-center">
-        <h4 className="text-3xl font-bold text-[#ff00ff]">{total}</h4>
-        <p className="text-white/70 text-sm">Problems Solved</p>
-      </div>
-      <div className="grid grid-cols-3 gap-4">
-        <div className="bg-[#262626] rounded-lg p-4 text-center">
-          <div className="text-2xl font-bold text-green-400">{easy}</div>
-          <div className="text-white/70 text-sm">Easy</div>
-        </div>
-        <div className="bg-[#262626] rounded-lg p-4 text-center">
-          <div className="text-2xl font-bold text-yellow-400">{medium}</div>
-          <div className="text-white/70 text-sm">Medium</div>
-        </div>
-        <div className="bg-[#262626] rounded-lg p-4 text-center">
-          <div className="text-2xl font-bold text-red-400">{hard}</div>
-          <div className="text-white/70 text-sm">Hard</div>
-        </div>
-      </div>
-      <div className="text-center">
-        <a
-          href={`https://leetcode.com/${username}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-[#ff00ff] hover:underline text-sm"
-        >
-          View full profile on LeetCode →
-        </a>
-      </div>
-    </div>
+    <ContributionGraph data={data}>
+      <ContributionGraphCalendar>
+        {({ activity, dayIndex, weekIndex }) => (
+          <ContributionGraphBlock
+            activity={activity}
+            className={cn(
+              'data-[level="0"]:fill-[#ebedf0] dark:data-[level="0"]:fill-[#161b22]',
+              'data-[level="1"]:fill-[#ffd699] dark:data-[level="1"]:fill-[#3d2701]',
+              'data-[level="2"]:fill-[#ffb84d] dark:data-[level="2"]:fill-[#663d00]',
+              'data-[level="3"]:fill-[#ff9900] dark:data-[level="3"]:fill-[#994d00]',
+              'data-[level="4"]:fill-[#cc6600] dark:data-[level="4"]:fill-[#ff9900]',
+            )}
+            dayIndex={dayIndex}
+            weekIndex={weekIndex}
+          />
+        )}
+      </ContributionGraphCalendar>
+      <ContributionGraphFooter />
+    </ContributionGraph>
   );
 };
 
@@ -584,13 +592,13 @@ export default function Home() {
               </div>
             </div>
 
-            {/* LeetCode Stats */}
+            {/* LeetCode Heatmap */}
             <div className="bg-[#1a1a1a] border border-[#333333] rounded-lg p-8">
               <h3 className="text-2xl font-bold mb-6 uppercase">
                 LeetCode Progress
               </h3>
-              <div className="flex justify-center">
-                <LeetCodeStats username="derazmnasr" />
+              <div className="flex justify-start">
+                <LeetCodeHeatmap username="derazmnasr" />
               </div>
             </div>
           </div>
