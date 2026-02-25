@@ -158,34 +158,40 @@
     }
 }
 
-/* Desktop: Smart 4-card layout */
+/* Desktop: Smart 5-card layout */
 @media (min-width: 1024px) {
     .project-card-grid {
         grid-template-columns: repeat(4, 1fr);
         grid-template-rows: repeat(2, 1fr);
     }
 
-    /* First project: Tall card spanning 2 columns */
+    /* First project: Tall card spanning 2 columns and 2 rows */
     .project-bento-card:nth-child(1) {
         grid-column: 1 / 3;
         grid-row: 1 / 3;
         min-height: 500px;
     }
 
-    /* Second project: Top right spanning 2 columns */
+    /* Second project: Top right square */
     .project-bento-card:nth-child(2) {
-        grid-column: 3 / 5;
+        grid-column: 3 / 4;
         grid-row: 1;
     }
 
-    /* Third project: Bottom right */
+    /* Third project: Top right corner square */
     .project-bento-card:nth-child(3) {
+        grid-column: 4 / 5;
+        grid-row: 1;
+    }
+
+    /* Fourth project: Bottom right square */
+    .project-bento-card:nth-child(4) {
         grid-column: 3 / 4;
         grid-row: 2;
     }
 
-    /* Fourth project: Bottom right corner */
-    .project-bento-card:nth-child(4) {
+    /* Fifth project: Bottom right corner square */
+    .project-bento-card:nth-child(5) {
         grid-column: 4 / 5;
         grid-row: 2;
     }

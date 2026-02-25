@@ -130,6 +130,19 @@ export default function Home() {
         },
       ],
     },
+    {
+      id: 5,
+      title: "High-Performance Image Pipeline",
+      description:
+        "Developed a multi-threaded C++17 image processing engine with O(N) separable filters and custom memory management for high-performance 4K video streams.",
+      repoUrl: "https://github.com/MDerazNasr/Image-Filter-Pipeline",
+      techStack: [
+        {
+          name: "C++",
+          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg",
+        },
+      ],
+    },
   ];
 
   const handleHomeClick = (e: React.MouseEvent) => {
