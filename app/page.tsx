@@ -40,6 +40,8 @@ import GradientText from "@/components/GradientText";
 import Shuffle from "@/components/Shuffle";
 //Carousel
 import Carousel, { CarouselItem } from "@/components/Carousel";
+//ReflectiveCard
+import ReflectiveCard from "@/components/ReflectiveCard";
 
 //PDF Viewer - using iframe instead
 // const defaultLayoutPluginInstance = defaultLayoutPlugin();
@@ -273,18 +275,28 @@ export default function Home() {
         id="projects"
         className="min-h-screen relative z-10 flex items-center justify-center pointer-events-auto"
       >
-        <div className="container mx-auto px-4 py-16">
+        <div className="w-full px-4 py-16">
           <h2 className="text-5xl font-bold mb-16 text-center uppercase">
             My Projects
           </h2>
-          <div className="flex justify-center">
-            <Carousel
-              items={projects}
-              baseWidth={400}
-              autoplay={false}
-              loop={true}
-              round={false}
-            />
+          <div
+            className="overflow-x-auto pb-8"
+            style={{
+              scrollbarWidth: "thin",
+              scrollbarColor: "#555 transparent",
+            }}
+          >
+            <div className="flex gap-8 px-8" style={{ width: "max-content" }}>
+              {projects.map((project) => (
+                <ReflectiveCard
+                  key={project.id}
+                  title={project.title}
+                  description={project.description}
+                  repoUrl={project.repoUrl}
+                  techStack={project.techStack}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </section>
