@@ -157,6 +157,10 @@ export default function Home() {
           name: "React",
           logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
         },
+        {
+          name: "CSS",
+          logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg",
+        },
       ],
     },
   ];
