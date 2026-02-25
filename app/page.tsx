@@ -769,6 +769,26 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Projects Section */}
+      <section
+        id="projects"
+        className="min-h-screen relative z-10 flex items-center justify-center pointer-events-auto"
+      >
+        <div className="w-full px-4 py-16">
+          <h2 className="text-5xl font-bold mb-16 text-center uppercase">
+            My Projects
+          </h2>
+          <ProjectBento
+            projects={projects}
+            enableSpotlight={true}
+            enableBorderGlow={true}
+            clickEffect={true}
+            spotlightRadius={400}
+            glowColor="255, 0, 255"
+          />
+        </div>
+      </section>
+
       {/* Resume Section */}
       <section
         id="resume"
@@ -788,26 +808,6 @@ export default function Home() {
               title="Resume PDF"
             />
           </div>
-        </div>
-      </section>
-
-      {/* Projects Section */}
-      <section
-        id="projects"
-        className="min-h-screen relative z-10 flex items-center justify-center pointer-events-auto"
-      >
-        <div className="w-full px-4 py-16">
-          <h2 className="text-5xl font-bold mb-16 text-center uppercase">
-            My Projects
-          </h2>
-          <ProjectBento
-            projects={projects}
-            enableSpotlight={true}
-            enableBorderGlow={true}
-            clickEffect={true}
-            spotlightRadius={400}
-            glowColor="255, 0, 255"
-          />
         </div>
       </section>
 
