@@ -63,38 +63,84 @@ import { cn } from "@/lib/utils";
 const GitHubContributionGraph = ({ username }: { username: string }) => {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchGitHubData = async () => {
       try {
         const now = new Date();
-        const days = eachDayOfInterval({
-          start: startOfYear(now),
-          end: now,
+        const fromDate = formatISO(startOfYear(now), {
+          representation: "date",
+        });
+        const toDate = formatISO(now, { representation: "date" });
+
+        const query = `
+          query($username: String!, $from: DateTime!, $to: DateTime!) {
+            user(login: $username) {
+              contributionsCollection(from: $from, to: $to) {
+                contributionCalendar {
+                  totalContributions
+                  weeks {
+                    contributionDays {
+                      contributionCount
+                      date
+                    }
+                  }
+                }
+              }
+            }
+          }
+        `;
+
+        const response = await fetch("https://api.github.com/graphql", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `bearer ${process.env.NEXT_PUBLIC_GITHUB_TOKEN || ""}`,
+          },
+          body: JSON.stringify({
+            query,
+            variables: {
+              username,
+              from: fromDate,
+              to: toDate,
+            },
+          }),
         });
 
-        // Generate mock data for now - you can integrate with GitHub API later
-        const maxCount = 20;
-        const maxLevel = 4;
+        const result = await response.json();
 
-        const contributionData = days.map((date) => {
-          const c = Math.round(
-            Math.random() * maxCount - Math.random() * (0.8 * maxCount),
-          );
-          const count = Math.max(0, c);
-          const level = Math.ceil((count / maxCount) * maxLevel);
+        if (result.errors) {
+          throw new Error(result.errors[0]?.message || "GitHub API error");
+        }
 
-          return {
-            date: formatISO(date, { representation: "date" }),
-            count,
-            level,
-          };
-        });
+        const contributions =
+          result.data?.user?.contributionsCollection?.contributionCalendar?.weeks
+            ?.flatMap((week: any) => week.contributionDays)
+            .map((day: any) => {
+              const count = day.contributionCount;
+              const maxCount = 20;
+              const maxLevel = 4;
+              const level =
+                count === 0
+                  ? 0
+                  : Math.min(
+                      Math.ceil((count / maxCount) * maxLevel),
+                      maxLevel,
+                    );
 
-        setData(contributionData);
+              return {
+                date: day.date,
+                count,
+                level,
+              };
+            }) || [];
+
+        setData(contributions);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching GitHub data:", error);
+        setError(error instanceof Error ? error.message : "Failed to load");
         setLoading(false);
       }
     };
@@ -104,6 +150,22 @@ const GitHubContributionGraph = ({ username }: { username: string }) => {
 
   if (loading) {
     return <div className="text-white/70">Loading contributions...</div>;
+  }
+
+  if (error) {
+    return (
+      <div className="text-white/70">
+        <p>Unable to load GitHub contributions.</p>
+        <a
+          href={`https://github.com/${username}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[#ff00ff] hover:underline"
+        >
+          View on GitHub
+        </a>
+      </div>
+    );
   }
 
   return (
