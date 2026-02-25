@@ -111,7 +111,11 @@ const LeetCodeHeatmap = ({ username }: { username: string }) => {
         });
 
         const contributionData = days.map((date) => {
-          const dateKey = Math.floor(date.getTime() / 1000).toString();
+          // Set to midnight UTC for consistent timestamp matching
+          const utcDate = new Date(
+            Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()),
+          );
+          const dateKey = Math.floor(utcDate.getTime() / 1000).toString();
           const count = submissionCalendar[dateKey] || 0;
           const maxCount = 10;
           const maxLevel = 4;
@@ -172,10 +176,10 @@ const LeetCodeHeatmap = ({ username }: { username: string }) => {
           <ContributionGraphBlock
             activity={activity}
             className={cn(
-              'data-[level="0"]:fill-[#161b22]',
-              'data-[level="1"]:fill-[#3d2701]',
-              'data-[level="2"]:fill-[#663d00]',
-              'data-[level="3"]:fill-[#994d00]',
+              'data-[level="0"]:fill-[#2d2d2d]',
+              'data-[level="1"]:fill-[#663d00]',
+              'data-[level="2"]:fill-[#994d00]',
+              'data-[level="3"]:fill-[#cc6600]',
               'data-[level="4"]:fill-[#ff9900]',
             )}
             dayIndex={dayIndex}
