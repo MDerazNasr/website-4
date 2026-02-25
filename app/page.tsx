@@ -1,10 +1,11 @@
 "use client";
 //import for resume section
 import { gsap } from "gsap";
-// import { Viewer, Worker } from '@react-pdf-viewer/core';
-// import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
-// import '@react-pdf-viewer/core/lib/styles/index.css';
-// import '@react-pdf-viewer/default-layout/lib/styles/index.css';
+// Removed problematic react-pdf-viewer - using iframe instead
+// import { Viewer, Worker } from "@react-pdf-viewer/core";
+// import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
+// import "@react-pdf-viewer/core/lib/styles/index.css";
+// import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 
 //background and curvedloop
 import Squares from "@/components/Squares";
@@ -38,7 +39,7 @@ import GradientText from "@/components/GradientText";
 //ShuffleText
 import Shuffle from "@/components/Shuffle";
 
-//PDF Viewer
+//PDF Viewer - using iframe instead
 // const defaultLayoutPluginInstance = defaultLayoutPlugin();
 
 export default function Home() {
@@ -84,10 +85,8 @@ export default function Home() {
   const curvedLoopItems = [
     { label: "About Me" },
     { label: "Resume", onClick: scrollToResume },
-    { label: "Education" },
-    { label: "Experience" },
+    { label: "Education + Experience" },
     { label: "Projects" },
-    { label: "Contact" },
   ];
 
   // Ensure only one Home button - filter duplicates by label
@@ -157,22 +156,26 @@ export default function Home() {
       </div>
 
       {/* Resume Section */}
-      {/* <section
+      <section
         id="resume"
-        className="min-h-screen relative z-10 flex items-center justify-center"
+        className="min-h-screen relative z-10 flex items-center justify-center pointer-events-auto"
       >
-        <div className="container mx-auto px-4">
-          <h2 className="text-5xl font-bold mb-8 text-center">My Resume</h2>
-          <div className="w-full max-w-4xl mx-auto" style={{ height: "800px" }}>
-            <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
-              <Viewer
-                fileUrl="/resume.pdf"
-                plugins={[defaultLayoutPluginInstance]}
-              />
-            </Worker>
+        <div className="container mx-auto px-4 py-16">
+          <h2 className="text-5xl font-bold mb-8 text-center uppercase">
+            My Resume
+          </h2>
+          <div
+            className="w-full max-w-4xl mx-auto bg-white rounded-lg shadow-2xl overflow-hidden"
+            style={{ height: "800px" }}
+          >
+            <iframe
+              src="/resume.pdf#zoom=100"
+              className="w-full h-full"
+              title="Resume PDF"
+            />
           </div>
         </div>
-      </section> */}
+      </section>
 
       {/* <div className="absolute bottom-0 left-0 right-0">
         <Dock
