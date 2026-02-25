@@ -80,7 +80,7 @@ const LeetCodeStats = ({ username }: { username: string }) => {
           }
         `;
 
-        const response = await fetch("https://leetcode.com/graphql", {
+        const response = await fetch("/api/leetcode", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -92,6 +92,7 @@ const LeetCodeStats = ({ username }: { username: string }) => {
         });
 
         const result = await response.json();
+        console.log("LeetCode API response:", result);
         setStats(result.data?.matchedUser);
         setLoading(false);
       } catch (error) {
