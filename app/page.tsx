@@ -98,6 +98,12 @@ const LeetCodeHeatmap = ({ username }: { username: string }) => {
           result.data?.matchedUser?.userCalendar?.submissionCalendar || "{}",
         );
 
+        console.log("Submission calendar data:", submissionCalendar);
+        console.log(
+          "Sample keys:",
+          Object.keys(submissionCalendar).slice(0, 5),
+        );
+
         const now = new Date();
         const days = eachDayOfInterval({
           start: startOfYear(now),
@@ -107,7 +113,7 @@ const LeetCodeHeatmap = ({ username }: { username: string }) => {
         const contributionData = days.map((date) => {
           const dateKey = Math.floor(date.getTime() / 1000).toString();
           const count = submissionCalendar[dateKey] || 0;
-          const maxCount = 20;
+          const maxCount = 10;
           const maxLevel = 4;
           const level =
             count === 0
@@ -120,6 +126,12 @@ const LeetCodeHeatmap = ({ username }: { username: string }) => {
             level,
           };
         });
+
+        console.log("First 10 days:", contributionData.slice(0, 10));
+        console.log(
+          "Days with submissions:",
+          contributionData.filter((d) => d.count > 0).length,
+        );
 
         setData(contributionData);
         setLoading(false);
@@ -160,11 +172,11 @@ const LeetCodeHeatmap = ({ username }: { username: string }) => {
           <ContributionGraphBlock
             activity={activity}
             className={cn(
-              'data-[level="0"]:fill-[#ebedf0] dark:data-[level="0"]:fill-[#161b22]',
-              'data-[level="1"]:fill-[#ffd699] dark:data-[level="1"]:fill-[#3d2701]',
-              'data-[level="2"]:fill-[#ffb84d] dark:data-[level="2"]:fill-[#663d00]',
-              'data-[level="3"]:fill-[#ff9900] dark:data-[level="3"]:fill-[#994d00]',
-              'data-[level="4"]:fill-[#cc6600] dark:data-[level="4"]:fill-[#ff9900]',
+              'data-[level="0"]:fill-[#161b22]',
+              'data-[level="1"]:fill-[#3d2701]',
+              'data-[level="2"]:fill-[#663d00]',
+              'data-[level="3"]:fill-[#994d00]',
+              'data-[level="4"]:fill-[#ff9900]',
             )}
             dayIndex={dayIndex}
             weekIndex={weekIndex}
